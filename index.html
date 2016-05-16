@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Observable by devsoulwolf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Observable</h1>
+      <h2 class="project-tagline">This is a thread scheduling library, time-consuming operation in the child thread, the main thread to update the UI</h2>
+      <a href="https://github.com/devsoulwolf/Observable" class="btn">View on GitHub</a>
+      <a href="https://github.com/devsoulwolf/Observable/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/devsoulwolf/Observable/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="observable" class="anchor" href="#observable" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Observable</h1>
+
+<p>This is a thread scheduling library, time-consuming operation in the child thread, the main thread to update the UI</p>
+
+<h2>
+<a id="sample" class="anchor" href="#sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h2>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Observable</span><span class="pl-k">.</span>create(<span class="pl-k">new</span> <span class="pl-k">OnSubscribe&lt;<span class="pl-smi">String</span>&gt;</span>() {
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">call</span>(<span class="pl-k">SubscriberDelegate&lt;? super <span class="pl-smi">String</span>&gt;</span> <span class="pl-v">subscriber</span>) <span class="pl-k">throws</span> <span class="pl-smi">Exception</span> {
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>,<span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+                <span class="pl-k">try</span>{
+                    subscriber<span class="pl-k">.</span>onStart();
+                    subscriber<span class="pl-k">.</span>onCompleted(<span class="pl-s"><span class="pl-pds">"</span>Success!<span class="pl-pds">"</span></span>);
+                }<span class="pl-k">catch</span> (<span class="pl-smi">Exception</span> e){
+                    subscriber<span class="pl-k">.</span>onError(e);
+                }
+            }
+        })<span class="pl-k">.</span>subscribe(<span class="pl-k">new</span> <span class="pl-k">Subscriber&lt;<span class="pl-smi">String</span>&gt;</span>() {
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onStart</span>() {
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>, <span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onError</span>(<span class="pl-smi">Throwable</span> <span class="pl-v">error</span>) {
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>, <span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onCompleted</span>(<span class="pl-smi">String</span> <span class="pl-v">t</span>) {
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>, <span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+            }
+        });
+
+        <span class="pl-c">// simple</span>
+        <span class="pl-smi">Observable</span><span class="pl-k">.</span>create(<span class="pl-k">new</span> <span class="pl-k">OnSubscribeImpl&lt;<span class="pl-smi">String</span>&gt;</span>() {
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">execute</span>() <span class="pl-k">throws</span> <span class="pl-smi">Exception</span> {
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>, <span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+                <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">"</span>Success<span class="pl-pds">"</span></span>;
+            }
+        })<span class="pl-k">.</span>subscribe(<span class="pl-k">new</span> <span class="pl-k">SubscriberHandler&lt;<span class="pl-smi">String</span>&gt;</span>() {
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onSuccess</span>(<span class="pl-smi">String</span> <span class="pl-v">response</span>) <span class="pl-k">throws</span> <span class="pl-smi">Exception</span> {
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>, <span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onFailure</span>(<span class="pl-smi">Throwable</span> <span class="pl-v">error</span>) {
+                <span class="pl-v">super</span><span class="pl-k">.</span>onFailure(error);
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>, <span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">onFinally</span>(<span class="pl-smi">String</span> <span class="pl-v">s</span>) {
+                <span class="pl-v">super</span><span class="pl-k">.</span>onFinally(s);
+                <span class="pl-smi">Log</span><span class="pl-k">.</span>i(<span class="pl-c1">TAG</span>, <span class="pl-s"><span class="pl-pds">"</span>The current thread name[<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">Thread</span><span class="pl-k">.</span>currentThread()<span class="pl-k">.</span>getName() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>].<span class="pl-pds">"</span></span>);
+            }
+        });</pre></div>
+
+<h2>
+<a id="jar" class="anchor" href="#jar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Jar</h2>
+
+<p><a href="https://bintray.com/soulwolf/maven/Observable/_latestVersion"> <img src="https://api.bintray.com/packages/soulwolf/maven/Observable/images/download.svg" alt="Download"> </a></p>
+
+<h2>
+<a id="maven" class="anchor" href="#maven" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven</h2>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;net.soulwolf.widget&lt;/groupId&gt;
+    &lt;url&gt;https://dl.bintray.com/soulwolf/maven&lt;/url&gt;
+    &lt;artifactId&gt;Observable&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2>
+<a id="gradle" class="anchor" href="#gradle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gradle</h2>
+
+<pre><code>allprojects {
+   repositories {
+      jcenter()
+      maven{
+        url "https://dl.bintray.com/soulwolf/maven"
+      }
+   }
+}
+
+compile 'net.soulwolf.widget:Observable:1.0.0'
+</code></pre>
+
+<h2>
+<a id="developed-by" class="anchor" href="#developed-by" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Developed by</h2>
+
+<p>Ching Soulwolf - <a href="mailto:Ching.Soulwolf@gmail.com">Ching.Soulwolf@gmail.com</a></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<pre><code>Copyright 2015 Soulwolf Ching
+Copyright 2015 The Android Open Source Project for Observable
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/devsoulwolf/Observable">Observable</a> is maintained by <a href="https://github.com/devsoulwolf">devsoulwolf</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
