@@ -2,8 +2,8 @@
 This is a thread scheduling library, time-consuming operation in the child thread, the main thread to update the UI
 
 ## Sample
-	```java
-	Observable.create(new OnSubscribe<String>() {
+```java
+Observable.create(new OnSubscribe<String>() {
             @Override
             public void call(SubscriberDelegate<? super String> subscriber) throws Exception {
                 Log.i(TAG,"The current thread name[" + Thread.currentThread().getName() + "].");
@@ -55,7 +55,8 @@ This is a thread scheduling library, time-consuming operation in the child threa
                 super.onFinally(s);
                 Log.i(TAG, "The current thread name[" + Thread.currentThread().getName() + "].");
             }
-        });```
+        });
+```
 
 ## Jar
 
