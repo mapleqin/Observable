@@ -60,7 +60,7 @@ Observable.create(new OnSubscribe<String>() {
 
 ## Jar
 
-  [ ![Download](https://api.bintray.com/packages/soulwolf/maven/Observable/images/download.svg) ](https://bintray.com/soulwolf/maven/Observable/_latestVersion)
+  [ ![Download](https://api.bintray.com/packages/soulwolf/maven/Observable/images/download.svg) ](http://simple.svmeng.com/download/jar/observable-1.0.0.jar)
 
 ## Maven
 	<dependency>
