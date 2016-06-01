@@ -6,6 +6,7 @@ import android.util.Log;
 
 import net.soulwolf.observable.Observable;
 import net.soulwolf.observable.OnSubscribe;
+import net.soulwolf.observable.OnSubscribeCompat;
 import net.soulwolf.observable.OnSubscribeImpl;
 import net.soulwolf.observable.Subscriber;
 import net.soulwolf.observable.SubscriberDelegate;
@@ -73,6 +74,39 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "The current thread name[" + Thread.currentThread().getName() + "].");
             }
         });
+        // simple2
+        Observable.create(new OnSubscribeCompat<String>("xx","sss") {
+            @Override
+            public String execute() throws Exception {
+                Log.i(TAG, "The current thread name[" + Thread.currentThread().getName() + "].");
+                String params1 = getParams(0);
+                String params2 = getParams(1);
+                return params1 + ":" + params2;
+            }
+        }).subscribe(new SubscriberHandler<String>() {
 
+            @Override
+            public void onStart() {
+                super.onStart();
+                Log.i(TAG, "The current thread name[" + Thread.currentThread().getName() + "].");
+            }
+
+            @Override
+            public void onSuccess(String response) throws Exception {
+                Log.i(TAG, "The current thread name[" + Thread.currentThread().getName() + "].");
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                super.onFailure(error);
+                Log.i(TAG, "The current thread name[" + Thread.currentThread().getName() + "].");
+            }
+
+            @Override
+            protected void onFinally(String s) {
+                super.onFinally(s);
+                Log.i(TAG, "The current thread name[" + Thread.currentThread().getName() + "].");
+            }
+        });
     }
 }

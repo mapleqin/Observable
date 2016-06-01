@@ -23,11 +23,11 @@ dependencies {
 }
 
 task makeJar(type: Copy) {
-    delete '../observable-1.0.0.jar'
+    delete '../observable-1.0.1.jar'
     from('build/intermediates/bundles/release/')
     into('../')
     include('classes.jar')
-    rename ('classes.jar', 'observable-1.0.0.jar')
+    rename ('classes.jar', 'observable-1.0.1.jar')
 }
 
 makeJar.dependsOn(build)

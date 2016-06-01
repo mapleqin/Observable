@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
  */
 class ThreadComponent {
 
-    static final int DEFAULT_THREAD_POOL_SIZE = 10;
+    static final int DEFAULT_THREAD_POOL_SIZE = 20;
 
     private static ThreadComponent component;
 
